@@ -29,6 +29,7 @@
 
 (= (list :a :b :c) '(:a :b :c))
 
+
 ;; 5. "conj" on lists ( elementary )
 ;; - When operating on a list, the conj function will return a new list with one or more items "added" to the front.
 
@@ -257,114 +258,86 @@
 (true? (#(= (seq %) (reverse (seq %))) '(1 1 3 3 1 1)))
 (false? (#(= (seq %) (reverse (seq %))) '(:a :b :c)))
 
-;; 28.
+;; 28. Flatten a sequence ( easy ?? ) ********************
+;; - Write a function which flattens a sequence.
 
+#_(= (__ '((1 2) 3 [4 [5 6]])) '(1 2 3 4 5 6))
+#_(= (__ ["a" ["b"] "c"]) '("a" "b" "c"))
+#_(= (__ '((((:a))))) '(:a))
 
+(= (#(remove % (tree-seq % seq %2))
+sequential? '((1 2) 3 [4 [5 6]])) '(1 2 3 4 5 6))
 
+(= (#(remove % (tree-seq % seq %2))
+sequential? ["a" ["b"] "c"]) '("a" "b" "c"))
 
+;; 29. Get the Caps ( easy )
+;; - Write a function which takes a string and returns a new string containing only the capital letters.
 
 
+#_(= (__ "HeLlO, WoRlD!") "HLOWRD")
+#_(empty? (__ "nothing"))
+#_(= (__ "$#A(*&987Zf") "AZ")
 
+(= ((fn [s] (apply str (filter #(Character/isUpperCase %) s)))  "HeLlO, WoRlD!") "HLOWRD")
 
+;; 30. Compress a sequence ( easy )
+;; - Write a function which removes consecutive duplicates from a sequence.
 
+#_(= (apply str (__ "Leeeeeerrroyyy")) "Leroy")
+#_(= (__ [1 1 2 3 3 2 2 3]) '(1 2 3 2 3))
+#_(= (__ [[1 2] [1 2] [3 4] [1 2]]) '([1 2] [3 4] [1 2]))
 
+(= (apply str (#(map first (partition-by identity %)) "Leeeeeerrroyyy")) "Leroy")
 
+(= (#(map first (partition-by identity %)) [1 1 2 3 3 2 2 3]) '(1 2 3 2 3))
 
+(= (#(map first (partition-by identity %)) [[1 2] [1 2] [3 4] [1 2]]) '([1 2] [3 4] [1 2]))
 
+;; 31. Pack a sequence ( easy )
+;; - Write a function which packs consecutive duplicates into sub-lists. 
 
+#_(= (__ [1 1 2 1 1 1 3 3]) '((1 1) (2) (1 1 1) (3 3)))
+#_(= (__ [:a :a :b :b :c]) '((:a :a) (:b :b) (:c)))
+#_(= (__ [[1 2] [1 2] [3 4]]) '(([1 2] [1 2]) ([3 4])))
 
+(= (partition-by identity [1 1 2 1 1 1 3 3]) '((1 1) (2) (1 1 1) (3 3)))
 
+(= (partition-by identity [:a :a :b :b :c]) '((:a :a) (:b :b) (:c)))
 
+(= (partition-by identity [[1 2] [1 2] [3 4]]) '(([1 2] [1 2]) ([3 4])))
 
+;; 32. Duplicate a sequence ( easy?? ) *******************
+;; - Write a function which duplicates each element of a sequence.
 
+#_(= (__ [1 2 3]) '(1 1 2 2 3 3))
+#_(= (__ [:a :a :b :b]) '(:a :a :a :a :b :b :b :b))
+#_(= (__ [[1 2] [3 4]]) '([1 2] [1 2] [3 4] [3 4]))
+#_(= (__ [44 33]) [44 44 33 33])
 
+(= (#(sort (take (* 2 (count %)) (cycle %))) [1 2 3]) '(1 1 2 2 3 3))
+(= (#(sort (take (* 2 (count %)) (cycle %))) [:a :a :b :b]) '(:a :a :a :a :b :b :b :b))
+(= (#(sort (take (* 2 (count %)) (cycle %)))  [[1 2] [3 4]]) '([1 2] [1 2] [3 4] [3 4]))
+(= (#(sort (take (* 2 (count %)) (cycle %))) [44 33]) [44 44 33 33]) ;; THIS IS FALSE BECAUSE OF SORT
 
+(= (#(interleave % %) [1 2 3]) '(1 1 2 2 3 3))
+(= (#(interleave % %) [:a :a :b :b]) '(:a :a :a :a :b :b :b :b))
+(= (#(interleave % %) [[1 2] [3 4]]) '([1 2] [1 2] [3 4] [3 4]))
+(= (#(interleave % %) [44 33]) [44 44 33 33])
 
+;; 33. Duplicate a sequence ( easy?? ) *******************
+;; - Write a function which duplicates each element of a sequence.
 
+#_(= (__ [1 2 3] 2) '(1 1 2 2 3 3))
+#_(= (__ [:a :b] 4) '(:a :a :a :a :b :b :b :b))
+#_(= (__ [[1 2] [3 4]] 2) '([1 2] [1 2] [3 4] [3 4]))
+#_(= (__ [44 33] 2) [44 44 33 33])
 
+(= (#(sort (take (* (count %) %2) (cycle %))) [1 2 3] 2) '(1 1 2 2 3 3))
+(= (#(sort (take (* (count %) %2) (cycle %))) [:a :b] 4) '(:a :a :a :a :b :b :b :b))
+(= (#(sort (take (* (count %) %2) (cycle %))) [[1 2] [3 4]] 2) '([1 2] [1 2] [3 4] [3 4]))
+(= (#(sort (take (* (count %) %2) (cycle %))) [44 33] 2) [44 44 33 33])  ;; THIS IS FALSE BECAUSE OF SORT
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+(= (#(mapcat (partial repeat %2) %) [1 2 3] 2) '(1 1 2 2 3 3)) ;; ???? 
 
 

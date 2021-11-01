@@ -169,7 +169,7 @@
 (= (#(second (reverse %)) (list 1 2 3 4 5)) 4)
 (= (#(second (reverse %)) [[1 2] [3 4]]) [1 2])
 
-;; 21. Nth element ( easy? ) ************************
+;; 21. Nth element ( easy )
 ;; - Write a function which returns the Nth element from a sequence. ( DON'T USE 'nth' FUNCTION)
 
 #_(= (__ '(4 5 6 7) 2) 6)
@@ -231,7 +231,7 @@
 (= (filter odd? [2 2 4 6]) '())
 (= (filter odd? [1 1 1 3]) '(1 1 1 3))
 
-;; 26. Fibonacci Sequence ( easy ) *****************
+;; 26. Fibonacci Sequence ( easy????????? ) *****************
 ;; - Write a function which returns the first X fibonacci numbers.
 
 #_(= (__ 3) '(1 1 2))
@@ -258,7 +258,7 @@
 (true? (#(= (seq %) (reverse (seq %))) '(1 1 3 3 1 1)))
 (false? (#(= (seq %) (reverse (seq %))) '(:a :b :c)))
 
-;; 28. Flatten a sequence ( easy ?? ) ********************
+;; 28. Flatten a sequence ( easy ??????????????? ) ********************
 ;; - Write a function which flattens a sequence.
 
 #_(= (__ '((1 2) 3 [4 [5 6]])) '(1 2 3 4 5 6))
@@ -307,7 +307,7 @@ sequential? ["a" ["b"] "c"]) '("a" "b" "c"))
 
 (= (partition-by identity [[1 2] [1 2] [3 4]]) '(([1 2] [1 2]) ([3 4])))
 
-;; 32. Duplicate a sequence ( easy?? ) *******************
+;; 32. Duplicate a sequence ( easy ) *******************
 ;; - Write a function which duplicates each element of a sequence.
 
 #_(= (__ [1 2 3]) '(1 1 2 2 3 3))
@@ -325,7 +325,7 @@ sequential? ["a" ["b"] "c"]) '("a" "b" "c"))
 (= (#(interleave % %) [[1 2] [3 4]]) '([1 2] [1 2] [3 4] [3 4]))
 (= (#(interleave % %) [44 33]) [44 44 33 33])
 
-;; 33. Duplicate a sequence ( easy?? ) *******************
+;; 33. Duplicate a sequence ( easy ) *******************
 ;; - Write a function which duplicates each element of a sequence.
 
 #_(= (__ [1 2 3] 2) '(1 1 2 2 3 3))
@@ -338,6 +338,142 @@ sequential? ["a" ["b"] "c"]) '("a" "b" "c"))
 (= (#(sort (take (* (count %) %2) (cycle %))) [[1 2] [3 4]] 2) '([1 2] [1 2] [3 4] [3 4]))
 (= (#(sort (take (* (count %) %2) (cycle %))) [44 33] 2) [44 44 33 33])  ;; THIS IS FALSE BECAUSE OF SORT
 
-(= (#(mapcat (partial repeat %2) %) [1 2 3] 2) '(1 1 2 2 3 3)) ;; ???? 
+(= (#(mapcat (partial repeat %2) %) [1 2 3] 2) '(1 1 2 2 3 3)) ;; ????
+
+;; 34. Implement range ( easy )
+;; - Write a function which creates a list of all integers in a given range.
+
+#_(= (__ 1 4) '(1 2 3))
+#_(= (__ -2 2) '(-2 -1 0 1))
+#_(= (__ 5 8) '(5 6 7))
+
+(= ((fn [x y]
+  (loop [iteration x
+         final-seq []]
+    (if (= iteration y)
+      final-seq
+      (recur (inc iteration) (into final-seq [iteration]))))) 1 4) '(1 2 3))
+
+(= ((fn [x y]
+  (loop [iteration x
+         final-seq []]
+    (if (= iteration y)
+      final-seq
+      (recur (inc iteration) (into final-seq [iteration])))))  -2 2) '(-2 -1 0 1))
+
+(= ((fn [x y]
+  (loop [iteration x
+         final-seq []]
+    (if (= iteration y)
+      final-seq
+      (recur (inc iteration) (into final-seq [iteration]))))) 5 8) '(5 6 7))
+
+;; 35. Local bindings ( elementary )
+;; - Clojure lets you give local names to values using the special let-form.
+
+#_(= __ (let [x 5] (+ 2 x)))
+#_(= __ (let [x 3, y 10] (- y x)))
+#_(= __ (let [x 21] (let [y 3] (/ x y))))
+
+(= 7 (let [x 5] (+ 2 x)))
+(= 7 (let [x 3, y 10] (- y x)))
+(= 7 (let [x 21] (let [y 3] (/ x y))))
+
+;; 36. Let It Be ( elementary )
+;; - Can you bind x, y, and z so that these are all true?
+
+#_(= 10 (let __ (+ x y)))
+#_(= 4 (let __ (+ y z)))
+#_(= 1 (let __ z))
+
+(= 10 (let [x 5 y 5] (+ x y)))
+(= 4 (let [z 2 y 2] (+ y z)))
+(= 1 (let [z 1] z))
+
+;; 37. Regular expressions ( elementary )
+;; - Regex patterns are supported with a special reader macro.
+
+#_(= __ (apply str (re-seq #"[A-Z]+" "bA1B3Ce ")))
+(= "ABC" (apply str (re-seq #"[A-Z]+" "bA1B3Ce ")))
+
+;; 38. Maximum value ( easy )
+;; - Write a function which takes a variable number of parameters and returns the maximum value.
+
+#_(= (__ 1 8 3 4) 8)
+#_(= (__ 30 20) 30)
+#_(= (__ 45 67 11) 67)
+
+(= ((fn [& x] 
+  (last (sort x))) 1 8 3 4) 8)
+
+(= ((fn [& x] 
+  (last (sort x))) 30 20) 30)
+
+(= ((fn [& x] 
+  (last (sort x))) 45 67 11) 67)
+
+;; 39. Interleave two seqs ( easy?? ) *****************
+;; - Write a function which takes two sequences and returns the first item from each, then the second item from each, then the third, etc. (DONT'T USE "interleave")
+
+#_(= (__ [1 2 3] [:a :b :c]) '(1 :a 2 :b 3 :c))
+#_(= (__ [1 2] [3 4 5 6]) '(1 3 2 4))
+#_(= (__ [1 2 3 4] [5]) [1 5])
+#_(= (__ [30 20] [25 15]) [30 25 20 15])
+
+(= (mapcat list [1 2 3] [:a :b :c]) '(1 :a 2 :b 3 :c))
+(= (mapcat list [1 2] [3 4 5 6]) '(1 3 2 4))
+(= (mapcat list [1 2 3 4] [5]) [1 5])
+(= (mapcat list [30 20] [25 15]) [30 25 20 15])
+
+;; 40. Interpose seqs ( easy )
+;; - Write a function which separates the items of a sequence by an arbitrary value. (DON'T USE ""interpose)
+
+#_(= ( 0 [1 2 3]) [1 0 2 0 3])
+#_(= (apply str (__ ", " ["one" "two" "three"])) "one, two, three")
+#_(= (__ :z [:a :b :c :d]) [:a :z :b :z :c :z :d])
+
+(= (#(drop-last(interleave %2 (repeat %1))) 0 [1 2 3]) [1 0 2 0 3])
+(= (apply str (#(drop-last(interleave %2 (repeat %1))) ", " ["one" "two" "three"])) "one, two, three")
+(= (#(drop-last(interleave %2 (repeat %1))) :z [:a :b :c :d]) [:a :z :b :z :c :z :d])
+
+;; 41. Drop every nth item ( easy??? ) **************************
+;; - Write a function which drops every Nth item from a sequence.
+
+#_(= (__ [1 2 3 4 5 6 7 8] 3) [1 2 4 5 7 8])
+#_(= (__ [:a :b :c :d :e :f] 2) [:a :c :e])
+#_(= (__ [1 2 3 4 5 6] 4) [1 2 3 5 6])
+
+(= (#(apply concat (partition-all (dec %2) %2 %)) [1 2 3 4 5 6 7 8] 3) [1 2 4 5 7 8])
+(= (#(apply concat (partition-all (dec %2) %2 %)) [:a :b :c :d :e :f] 2) [:a :c :e])
+(= (#(apply concat (partition-all (dec %2) %2 %)) [1 2 3 4 5 6] 4) [1 2 3 5 6])
+
+(#(apply concat (partition-all (dec %2) %2 %)) [1 2 3 4 5 6 7 8] 3)
+(#(partition-all (dec %2) %2 %)[1 2 3 4 5 6 7 8] 3) ;; no words......
+
+;; 42. Factorial fun ( easy )
+;; - Write a function which calculates factorials.
+#_(= (__ 1) 1)
+#_(= (__ 3) 6)
+#_(= (__ 5) 120)
+#_(= (__ 8) 40320)
+
+(= (#(reduce * (rest(range (inc %) ))) 1) 1)
+(= (#(reduce * (rest(range (inc %) ))) 3) 6)
+(= (#(reduce * (rest(range (inc %) ))) 5) 120)
+(= (#(reduce * (rest(range (inc %) ))) 8) 40320)
+
+;; 42. Reverse interleave ( medium )
+;; - Write a function which reverses the interleave process into x number of subsequences.
+
+#_(= (__ [1 2 3 4 5 6] 2) '((1 3 5) (2 4 6)))
+#_(= (__ (range 9) 3) '((0 3 6) (1 4 7) (2 5 8)))
+#_(= (__ (range 10) 5) '((0 5) (1 6) (2 7) (3 8) (4 9)))
+
+(#(apply map list(partition %2 %1)) [1 2 3 4 5 6] 2)
+;; multiple map arguments in this case 3, with apply we have 6 (12) (34) (56), first element from every list gathers in new first list (1 3 5), 
+;; it is same for every second element (2 4 6), so we get (1 3 5) (2 4 6)...
+(= (#(apply map list(partition %2 %1)) [1 2 3 4 5 6] 2) '((1 3 5) (2 4 6)))
+(= (#(apply map list(partition %2 %1)) (range 9) 3) '((0 3 6) (1 4 7) (2 5 8)))
+(= (#(apply map list(partition %2 %1)) (range 10) 5) '((0 5) (1 6) (2 7) (3 8) (4 9)))
 
 
